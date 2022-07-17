@@ -127,7 +127,7 @@ public class CountdownNumberFactory {
             }
         }
 //        System.out.println(primeNumbers);
-        int target = 169;
+        int target = 126;
         CountdownNumber targetNumber = of(target);
         CountdownNumber[] raws = new CountdownNumber[]{
                 SmallNumber.TWO,

@@ -8,6 +8,7 @@ public class Triangle {
     public static final Comparator<Triangle> A_COMPARATOR = new BComparator();
     public static final Comparator<Triangle> B_COMPARATOR = new BComparator();
     public static final Comparator<Triangle> C_COMPARATOR = new CComparator();
+    public static final Comparator<Triangle> C2_COMPARATOR = new C2Comparator();
     private final CountdownNumber a;
     private final CountdownNumber b;
     private final Operation o;
@@ -18,7 +19,7 @@ public class Triangle {
         this.a = a;
         this.b = b;
         this.o = o;
-        this.c = CountdownNumberFactory.of(o.apply(a.value(),b.value()));
+        this.c = CountdownNumberFactory.of(o.apply(a.value(), b.value()));
     }
 
     public CountdownNumber getA() {
@@ -63,35 +64,46 @@ public class Triangle {
     }
 
     //Priority given to triangle with more the combined factors of b and c.
-    public static class AComparator implements Comparator<Triangle>{
+    public static class AComparator implements Comparator<Triangle> {
         @Override
         public int compare(Triangle o1, Triangle o2) {
             return Integer.compare(
-                    CountdownNumberFactory.nonTrivialFactors(o2.b.value())+ CountdownNumberFactory.nonTrivialFactors(o2.c.value()),
-                    CountdownNumberFactory.nonTrivialFactors(o1.b.value())+ CountdownNumberFactory.nonTrivialFactors(o1.c.value())
+                    CountdownNumberFactory.nonTrivialFactors(o2.b.value()) + CountdownNumberFactory.nonTrivialFactors(o2.c.value()),
+                    CountdownNumberFactory.nonTrivialFactors(o1.b.value()) + CountdownNumberFactory.nonTrivialFactors(o1.c.value())
             );
         }
     }
 
     //Priority given to triangle with more the combined factors of a and c.
-    public static class BComparator implements Comparator<Triangle>{
+    public static class BComparator implements Comparator<Triangle> {
         @Override
         public int compare(Triangle o1, Triangle o2) {
             return Integer.compare(
-                    CountdownNumberFactory.nonTrivialFactors(o2.a.value())+ CountdownNumberFactory.nonTrivialFactors(o2.c.value()),
-                    CountdownNumberFactory.nonTrivialFactors(o1.a.value())+ CountdownNumberFactory.nonTrivialFactors(o1.c.value())
-                    );
+                    CountdownNumberFactory.nonTrivialFactors(o2.a.value()) + CountdownNumberFactory.nonTrivialFactors(o2.c.value()),
+                    CountdownNumberFactory.nonTrivialFactors(o1.a.value()) + CountdownNumberFactory.nonTrivialFactors(o1.c.value())
+            );
         }
     }
 
     // The more the combined factors of a and b are, the more front the triangle.
-    public static class CComparator implements Comparator<Triangle>{
+    public static class CComparator implements Comparator<Triangle> {
         @Override
         public int compare(Triangle o1, Triangle o2) {
             return Integer.compare(
-                    CountdownNumberFactory.nonTrivialFactors(o2.b.value())+ CountdownNumberFactory.nonTrivialFactors(o2.a.value()),
-                    CountdownNumberFactory.nonTrivialFactors(o1.b.value())+ CountdownNumberFactory.nonTrivialFactors(o1.a.value())
+                    CountdownNumberFactory.nonTrivialFactors(o2.b.value()) + CountdownNumberFactory.nonTrivialFactors(o2.a.value()),
+                    CountdownNumberFactory.nonTrivialFactors(o1.b.value()) + CountdownNumberFactory.nonTrivialFactors(o1.a.value())
             );
         }
     }
+
+    public static class C2Comparator implements Comparator<Triangle> {
+        private final Comparator<Triangle> cComparator = C_COMPARATOR;
+
+        @Override
+        public int compare(Triangle o1, Triangle o2) {
+            int compare = Integer.compare(Math.max(o1.a.value(), o1.b.value()), Math.max(o2.a.value(), o2.b.value()));
+            return compare != 0 ? compare : cComparator.compare(o1, o2);
+        }
+    }
+
 }

@@ -12,7 +12,7 @@ public class Network {
     public void addTriangle(Triangle triangle) {
         trianglesByA.computeIfAbsent(triangle.getA().value(), k -> new ConcurrentSkipListSet<>(Triangle.A_COMPARATOR)).add(triangle);
         trianglesByB.computeIfAbsent(triangle.getB().value(), k -> new ConcurrentSkipListSet<>(Triangle.B_COMPARATOR)).add(triangle);
-        trianglesByC.computeIfAbsent(triangle.getC().value(), k -> new ConcurrentSkipListSet<>(Triangle.C_COMPARATOR)).add(triangle);
+        trianglesByC.computeIfAbsent(triangle.getC().value(), k -> new ConcurrentSkipListSet<>(Triangle.C2_COMPARATOR)).add(triangle);
     }
 
     public Set<Triangle> getTrianglesWithA(int a) {
